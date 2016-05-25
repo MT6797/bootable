@@ -123,6 +123,13 @@ Volume* volume_for_path(const char* path) {
 
 int ensure_path_mounted(const char* path) {
     Volume* v = volume_for_path(path);
+//adupsfota start
+#ifdef ADUPS_FOTA_SUPPORT
+    if (strncmp(path, "/fotaupdate/", 12) == 0) {
+        return 0;
+    }
+#endif
+//adupsfota end
     if (v == NULL) {
         LOGE("unknown volume for path [%s]\n", path);
         return -1;
@@ -257,6 +264,14 @@ mount_done:
 
 int ensure_path_unmounted(const char* path) {
     Volume* v = volume_for_path(path);
+	
+//adupsfota start
+#ifdef ADUPS_FOTA_SUPPORT
+    if (strncmp(path, "/fotaupdate/", 12) == 0) {
+        return 0;
+    }
+#endif
+//adupsfota end
 
 #if defined(CACHE_MERGE_SUPPORT)
     if (strncmp(path, "/cache", 6) == 0) {

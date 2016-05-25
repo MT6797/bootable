@@ -61,6 +61,16 @@
 #include "mt_recovery.h"
 #include "mt_partition.h"
 
+//adupsfota start
+#ifdef ADUPS_FOTA_SUPPORT
+extern "C"{
+extern void finish_adupsfota(const char* path, const char* source, int status);
+extern char* find_update_package(const char* path);
+}
+static int perform_fota = 0;
+#endif
+//adupsfota end
+
 struct selabel_handle *sehandle;
 
 static const struct option OPTIONS[] = {
@@ -1111,6 +1121,12 @@ main(int argc, char **argv) {
     printf("\n");
 
     if (update_package) {
+	//adupsfota start
+    #ifdef ADUPS_FOTA_SUPPORT
+        update_package = find_update_package(update_package);
+		perform_fota = 1;
+    #endif
+    //adupsfota end
         // For backwards compatibility on the cache partition only, if
         // we're given an old 'root' path "CACHE:foo", change it to
         // "/cache/foo".
@@ -1220,6 +1236,13 @@ main(int argc, char **argv) {
 
     // Save logs and clean up before rebooting or shutting down.
     finish_recovery(send_intent);
+//adupsfota start
+#ifdef ADUPS_FOTA_SUPPORT
+    if (perform_fota == 1) {
+        finish_adupsfota(update_package, TEMPORARY_LOG_FILE, status);
+	}
+#endif
+//adupsfota end
 
     switch (after) {
         case Device::SHUTDOWN:

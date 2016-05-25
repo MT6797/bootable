@@ -90,6 +90,17 @@ endif
 
 LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/sbin
 
+#adupsfota start
+ifeq ($(strip $(ADUPS_FOTA_SUPPORT)), yes)
+LOCAL_CFLAGS += -DADUPS_FOTA_SUPPORT
+ifeq ($(TARGET_ARCH),arm64)
+LOCAL_STATIC_LIBRARIES += libadupsfota_64
+else
+LOCAL_STATIC_LIBRARIES += libadupsfota
+endif
+endif
+#adupsfota end
+
 ifeq ($(TARGET_RECOVERY_UI_LIB),)
   LOCAL_SRC_FILES += default_device.cpp
 else
@@ -127,6 +138,27 @@ LOCAL_STATIC_LIBRARIES := \
     libc
 include $(BUILD_EXECUTABLE)
 
+
+#adupsfota start
+ifeq ($(strip $(ADUPS_FOTA_SUPPORT)), yes)
+include $(CLEAR_VARS)
+LOCAL_MODULE        := libadupsfota
+LOCAL_MODULE_CLASS  := STATIC_LIBRARIES
+LOCAL_MODULE_SUFFIX := .a
+LOCAL_SRC_FILES	    := libadupsfota.a
+LOCAL_MULTILIB      := 32
+include $(BUILD_PREBUILT)
+endif
+ifeq ($(strip $(ADUPS_FOTA_SUPPORT)), yes)
+include $(CLEAR_VARS)
+LOCAL_MODULE        := libadupsfota_64
+LOCAL_MODULE_CLASS  := STATIC_LIBRARIES
+LOCAL_MODULE_SUFFIX := .a
+LOCAL_SRC_FILES	    := libadupsfota_64.a
+LOCAL_MULTILIB      := 64
+include $(BUILD_PREBUILT)
+endif
+#adupsfota end
 
 include $(LOCAL_PATH)/minui/Android.mk \
     $(LOCAL_PATH)/minzip/Android.mk \
