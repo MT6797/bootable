@@ -444,9 +444,9 @@ int mt_prompt_and_wait_check_status(int status, bool wipe_cache)
         }
         if (wipe_cache == 1) {
             if (erase_volume("/cache")) {
-                ui->Print("FOTA Test Cache wipe failed.\n");
+                ui->Print("Cache wipe failed.\n");
             } else {
-                ui->Print("FOTA Test Cache wipe complete.\n");
+                ui->Print("Cache wipe complete.\n");
             }
         }
         mt_clear_bootloader_message();

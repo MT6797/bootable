@@ -788,7 +788,7 @@ static bool wipe_cache(bool should_confirm, Device* device) {
 
     ui->Print("\n-- Wiping cache...\n");
     bool success = erase_volume("/cache");
-    ui->Print("FOTA Test 1 Cache wipe %s.\n", success ? "complete" : "failed");
+    ui->Print("Cache wipe %s.\n", success ? "complete" : "failed");
     return success;
 }
 
