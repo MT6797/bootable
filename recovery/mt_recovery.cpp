@@ -409,7 +409,7 @@ static int mt_prompt_force_upgrade(Device* device)
                             " No",
                             " No",
                             " No",
-                            " Yes -- delete all user data",   // [7]
+                            " Yes -- delete all user data.",   // [7]
                             " No",
                             " No",
                             " No",
@@ -766,7 +766,7 @@ static bool mt_wipe_data_sp(int confirm, Device* device) {
                                 " No",
                                 " No",
                                 " No",
-                                " Yes -- delete all user data",   // [7]
+                                " Yes -- delete all user data.",   // [7]
                                 " No",
                                 " No",
                                 " No",
@@ -805,7 +805,7 @@ static bool mt_wipe_data_wearable(int confirm, Device* device) {
                                 "No",
                                 "No",
                                 "No",
-                                "Yes--delete all user data",   // [4]
+                                "Yes--delete all user data.",   // [4]
                                 "No",
                                 "No",
                                 NULL };
